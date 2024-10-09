@@ -1624,7 +1624,7 @@ async function run({selector, control}) {
 	`);
 	root.appendChild(canvas);
 
-	dynamicallyLoadScript("https://not-fl3.github.io/miniquad-samples/mq_js_bundle.js", async () => {
+	dynamicallyLoadScript("/mq-bundle.js", async () => {
 		let wbg = await remote_client();
 		miniquad_add_plugin({
 			register_plugin: (a) => (a.wbg = wbg),
