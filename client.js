@@ -5,7 +5,7 @@
 /***/ 7:
 /***/ ((module) => {
 
-
+// #region eventListener
 var R = typeof Reflect === 'object' ? Reflect : null
 var ReflectApply = R && typeof R.apply === 'function'
   ? R.apply
@@ -481,6 +481,8 @@ function eventTargetAgnosticAddListener(emitter, name, listener, flags) {
   }
 }
 
+// #endregion
+
 /***/ }),
 
 /***/ 58:
@@ -494,7 +496,7 @@ module.exports = __webpack_require__.p + "3fe9f0f9e254e41ba4b4.wasm";
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -508,17 +510,17 @@ module.exports = __webpack_require__.p + "3fe9f0f9e254e41ba4b4.wasm";
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = __webpack_modules__;
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
@@ -531,12 +533,12 @@ module.exports = __webpack_require__.p + "3fe9f0f9e254e41ba4b4.wasm";
 /******/ 			}
 /******/ 		})();
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/publicPath */
 /******/ 	(() => {
 /******/ 		var scriptUrl;
@@ -559,33 +561,33 @@ module.exports = __webpack_require__.p + "3fe9f0f9e254e41ba4b4.wasm";
 /******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
 /******/ 		__webpack_require__.p = scriptUrl;
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/jsonp chunk loading */
 /******/ 	(() => {
 /******/ 		__webpack_require__.b = document.baseURI || self.location.href;
-/******/ 		
+/******/
 /******/ 		// object to store loaded and loading chunks
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
 /******/ 			792: 0
 /******/ 		};
-/******/ 		
+/******/
 /******/ 		// no chunk on demand loading
-/******/ 		
+/******/
 /******/ 		// no prefetching
-/******/ 		
+/******/
 /******/ 		// no preloaded
-/******/ 		
+/******/
 /******/ 		// no HMR
-/******/ 		
+/******/
 /******/ 		// no HMR manifest
-/******/ 		
+/******/
 /******/ 		// no on chunks loaded
-/******/ 		
+/******/
 /******/ 		// no jsonp function
 /******/ 	})();
-/******/ 	
+/******/
 /************************************************************************/
 
 // EXTERNAL MODULE: ./node_modules/events/events.js
@@ -652,58 +654,6 @@ function get_control() {
 
 ;// CONCATENATED MODULE: ../dist/snippets/client-cda1b8d006d10648/js/src/control.js
 
-class control_Control extends events.EventEmitter {
-	constructor() {
-		super();
-		this.state = null;
-		this.player_index = null;
-		this._assets_url = null;
-
-		this.addListener("state", (data) => {
-			this.state = data;
-		});
-		// When we receive log slices, when executing a move
-		this.addListener("gamelog", (logData) => {
-			// Ignore the log data and tell the backend we want the new state
-			this.emit("fetchState");
-		});
-		this.addListener("state:updated", () => {
-			this.emit("fetchState");
-		});
-		this.addListener("player", (player) => {
-			this.player_index = player.index;
-		});
-	}
-
-	receive_state() {
-		const state = this.state;
-		this.state = null;
-		return state;
-	}
-
-	receive_player_index() {
-		const index = this.player_index;
-		this.player_index = null;
-		return index;
-	}
-
-	send_move(move) {
-		this.emit("move", move);
-	}
-
-	send_ready() {
-		console.log("Sending ready");
-		this.emit("ready");
-	}
-
-	get assets_url() {
-		return this._assets_url;
-	}
-
-	set assets_url(value) {
-		this._assets_url = value;
-	}
-}
 
 function control_get_control() {
 	return window.clash_control;
@@ -1553,6 +1503,7 @@ function __wbg_finalize_init(instance, module) {
 }
 
 function initSync(module) {
+	console.log("_initSync called", module_or_path);
 	if (wasm !== undefined) return wasm;
 
 	if (typeof module !== 'undefined' && Object.getPrototypeOf(module) === Object.prototype)
@@ -1574,6 +1525,7 @@ function initSync(module) {
 }
 
 async function __wbg_init(module_or_path) {
+	console.log("__wbg_init called", module_or_path);
 	if (wasm !== undefined) return wasm;
 
 	if (typeof module_or_path !== 'undefined' && Object.getPrototypeOf(module_or_path) === Object.prototype)
@@ -1613,7 +1565,7 @@ async function run({selector, control}) {
 	const root = document.querySelector(selector);
 	const canvas = document.createElement("canvas");
 	canvas.setAttribute("id", "glcanvas");
-	canvas.setAttribute("style", ` 
+	canvas.setAttribute("style", `
 				margin: 0px;
 				padding: 0px;
 				width: 100%;
