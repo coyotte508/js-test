@@ -896,6 +896,7 @@ function makeMutClosure(arg0, arg1, dtor, f) {
 }
 
 function logError(f, args) {
+	console.log("Calling", f.name, args);
 	try {
 		return f.apply(this, args);
 	} catch (e) {
@@ -1484,8 +1485,6 @@ function __wbg_get_imports() {
 		return addHeapObject(ret);
 	}, arguments) };
 	return imports.wbg;
-
-	return imports;
 }
 
 function __wbg_init_memory(imports, memory) {
@@ -1502,29 +1501,7 @@ function __wbg_finalize_init(instance, module) {
 	return wasm;
 }
 
-function __wbg_init(module) {
-	console.log("_initSync called", module);
-	if (wasm !== undefined) return wasm;
-
-	if (typeof module !== 'undefined' && Object.getPrototypeOf(module) === Object.prototype)
-	({module} = module)
-	else
-	console.warn('using deprecated parameters for `initSync()`; pass a single object instead')
-
-	return __wbg_get_imports();
-
-	__wbg_init_memory(imports);
-
-	if (!(module instanceof WebAssembly.Module)) {
-		module = new WebAssembly.Module(module);
-	}
-
-	const instance = new WebAssembly.Instance(module, imports);
-
-	return __wbg_finalize_init(instance, module);
-}
-
-async function __wbg_init2(module_or_path) {
+async function __wbg_init(module_or_path) {
 	console.log("__wbg_init called", module_or_path);
 	if (wasm !== undefined) return wasm;
 
@@ -1537,16 +1514,6 @@ async function __wbg_init2(module_or_path) {
 		module_or_path = new URL(/* asset import */ __webpack_require__(58), __webpack_require__.b);
 	}
 	return __wbg_get_imports();
-
-	if (typeof module_or_path === 'string' || (typeof Request === 'function' && module_or_path instanceof Request) || (typeof URL === 'function' && module_or_path instanceof URL)) {
-		module_or_path = fetch(module_or_path);
-	}
-
-	__wbg_init_memory(imports);
-
-	const { instance, module } = await __wbg_load(await module_or_path, imports);
-
-	return __wbg_finalize_init(instance, module);
 }
 
 /* harmony default export */ const remote_client = (__wbg_init);
@@ -1579,8 +1546,14 @@ async function run({selector, control}) {
 	dynamicallyLoadScript("/mq-bundle.js", async () => {
 		let wbg = await remote_client();
 		miniquad_add_plugin({
-			register_plugin: (a) => (a.wbg = wbg),
-			on_init: () => set_wasm(wasm_exports),
+			register_plugin: (a) => {
+				console.log("register_plugin", a);
+				(a.wbg = wbg)
+			},
+			on_init: () => {
+				console.log("on_init", wasm_exports);
+				set_wasm(wasm_exports)
+			},
 			version: "0.0.1",
 			name: "wbg",
 		});
