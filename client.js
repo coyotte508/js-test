@@ -1066,102 +1066,39 @@ function __wbg_adapter_121(arg0, arg1, arg2, arg3) {
 	wasm.wasm_bindgen__convert__closures__invoke2_mut__h57a40dbe11a3c21c(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
-const RemoteClientFinalization = (typeof FinalizationRegistry === 'undefined')
-	? { register: () => {}, unregister: () => {} }
-	: new FinalizationRegistry(ptr => wasm.__wbg_remoteclient_free(ptr >>> 0, 1));
-/**
-*/
-class RemoteClient {
-
-	constructor() {
-		throw new Error('cannot invoke `new` directly');
-	}
-
-	__destroy_into_raw() {
-		const ptr = this.__wbg_ptr;
-		this.__wbg_ptr = 0;
-		RemoteClientFinalization.unregister(this);
-		return ptr;
-	}
-
-	free() {
-		const ptr = this.__destroy_into_raw();
-		wasm.__wbg_remoteclient_free(ptr, 0);
-	}
-	/**
-	* @returns {Promise<void>}
-	*/
-	static start() {
-		const ret = wasm.remoteclient_start();
-		return takeObject(ret);
-	}
-	/**
-	* @returns {Promise<void>}
-	*/
-	run() {
-		if (this.__wbg_ptr == 0) throw new Error('Attempt to use a moved value');
-		_assertNum(this.__wbg_ptr);
-		const ret = wasm.remoteclient_run(this.__wbg_ptr);
-		return takeObject(ret);
-	}
-}
-
-async function __wbg_load(module, imports) {
-	if (typeof Response === 'function' && module instanceof Response) {
-		if (typeof WebAssembly.instantiateStreaming === 'function') {
-			try {
-				return await WebAssembly.instantiateStreaming(module, imports);
-
-			} catch (e) {
-				if (module.headers.get('Content-Type') != 'application/wasm') {
-					console.warn("`WebAssembly.instantiateStreaming` failed because your server does not serve wasm with `application/wasm` MIME type. Falling back to `WebAssembly.instantiate` which is slower. Original error:\n", e);
-
-				} else {
-					throw e;
-				}
-			}
-		}
-
-		const bytes = await module.arrayBuffer();
-		return await WebAssembly.instantiate(bytes, imports);
-
-	} else {
-		const instance = await WebAssembly.instantiate(module, imports);
-
-		if (instance instanceof WebAssembly.Instance) {
-			return { instance, module };
-
-		} else {
-			return instance;
-		}
-	}
-}
 
 function __wbg_get_imports() {
 	const imports = {};
 	imports.wbg = {};
 	imports.wbg.__wbg_log_4bdf1576e3317256 = function() { return logError(function (arg0, arg1) {
+		console.log("__wbg_log_4bdf1576e3317256", arg1)
 		console.log(getStringFromWasm0(arg0, arg1));
 	}, arguments) };
 	imports.wbg.__wbg_getcontrol_3264bfc667ef7fdf = function() { return logError(function () {
+		console.log("__wbg_getcontrol_3264bfc667ef7fdf")
 		const ret = control_get_control();
 		return addHeapObject(ret);
 	}, arguments) };
 	imports.wbg.__wbg_receivestate_f4445fef81eefecf = function() { return logError(function (arg0) {
+		console.log("__wbg_receivestate_f4445fef81eefecf")
 		const ret = getObject(arg0).receive_state();
 		return addHeapObject(ret);
 	}, arguments) };
 	imports.wbg.__wbg_receiveplayerindex_ab65cd651c6192b6 = function() { return logError(function (arg0) {
+		console.log("__wbg_receiveplayerindex_ab65cd651c6192b6")
 		const ret = getObject(arg0).receive_player_index();
 		return addHeapObject(ret);
 	}, arguments) };
 	imports.wbg.__wbg_sendmove_fed46023fcc631cd = function() { return logError(function (arg0, arg1) {
+		console.log("__wbg_sendmove_fed46023fcc631cd", arg1)
 		getObject(arg0).send_move(takeObject(arg1));
 	}, arguments) };
 	imports.wbg.__wbg_sendready_b0dce48818afc6a8 = function() { return logError(function (arg0) {
+		console.log("__wbg_sendready_b0dce48818afc6a8")
 		getObject(arg0).send_ready();
 	}, arguments) };
 	imports.wbg.__wbg_assetsurl_f9692a68a8f05e40 = function() { return logError(function (arg0, arg1) {
+		console.log("__wbg_assetsurl_f9692a68a8f05e40", arg1)
 		const ret = getObject(arg1).assets_url;
 		const ptr1 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
 		const len1 = WASM_VECTOR_LEN;
@@ -1480,24 +1417,11 @@ function __wbg_get_imports() {
 		return addHeapObject(ret);
 	};
 	imports.wbg.__wbindgen_closure_wrapper14642 = function() { return logError(function (arg0, arg1, arg2) {
+		console.log("__wbindgen_closure_wrapper14642", arg1, arg2)
 		const ret = makeMutClosure(arg0, arg1, 692, __wbg_adapter_48);
 		return addHeapObject(ret);
 	}, arguments) };
 	return imports.wbg;
-}
-
-function __wbg_init_memory(imports, memory) {
-
-}
-
-function __wbg_finalize_init(instance, module) {
-	wasm = instance.exports;
-	__wbg_init.__wbindgen_wasm_module = module;
-	cachedDataViewMemory0 = null;
-	cachedUint8ArrayMemory0 = null;
-
-	wasm.__wbindgen_start();
-	return wasm;
 }
 
 async function __wbg_init(module_or_path) {
