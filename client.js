@@ -896,7 +896,6 @@ function makeMutClosure(arg0, arg1, dtor, f) {
 }
 
 function logError(f, args) {
-	console.log("Calling", f.name, args);
 	try {
 		return f.apply(this, args);
 	} catch (e) {
@@ -1548,11 +1547,11 @@ async function run({selector, control}) {
 		miniquad_add_plugin({
 			register_plugin: (a) => {
 				console.log("register_plugin", a);
-				(a.wbg = wbg)
+				return (a.wbg = wbg)
 			},
 			on_init: () => {
 				console.log("on_init", wasm_exports);
-				set_wasm(wasm_exports)
+				return set_wasm(wasm_exports)
 			},
 			version: "0.0.1",
 			name: "wbg",
