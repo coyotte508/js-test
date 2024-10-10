@@ -1503,7 +1503,7 @@ function __wbg_finalize_init(instance, module) {
 }
 
 function __wbg_init(module) {
-	console.log("_initSync called", module_or_path);
+	console.log("_initSync called", module);
 	if (wasm !== undefined) return wasm;
 
 	if (typeof module !== 'undefined' && Object.getPrototypeOf(module) === Object.prototype)
