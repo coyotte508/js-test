@@ -1474,7 +1474,8 @@ async function run({selector, control}) {
 				return (a.wbg = wbg)
 			},
 			on_init: () => {
-				console.log("on_init", wasm_exports);
+				console.log("on_init 2", wasm_exports);
+				window.clash_control.send_ready()
 				return set_wasm(wasm_exports)
 			},
 			version: "0.0.1",
