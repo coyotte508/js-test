@@ -1502,7 +1502,7 @@ function __wbg_finalize_init(instance, module) {
 	return wasm;
 }
 
-function initSync(module) {
+function __wbg_init(module) {
 	console.log("_initSync called", module_or_path);
 	if (wasm !== undefined) return wasm;
 
@@ -1524,7 +1524,7 @@ function initSync(module) {
 	return __wbg_finalize_init(instance, module);
 }
 
-async function __wbg_init(module_or_path) {
+async function __wbg_init2(module_or_path) {
 	console.log("__wbg_init called", module_or_path);
 	if (wasm !== undefined) return wasm;
 
